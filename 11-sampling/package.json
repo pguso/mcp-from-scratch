@@ -2,7 +2,7 @@
   "name": "mcp-from-scratch-sampling",
   "private": true,
   "type": "module",
-  "description": "Module 10: MCP sampling client with local Qwen via node-llama-cpp",
+  "description": "Module 11: MCP sampling client with local Qwen via node-llama-cpp",
   "scripts": {
     "start": "node src/client.js"
   },

@@ -22,109 +22,112 @@ Module 06 is the **tools** milestone. Module 09 adds **prompts** (Desktop / Curs
 
 ## Repository structure
 
-```
-mcp/
+```text
+mcp-from-scratch/
 ├── README.md                  ← you are here
 ├── package.json               ← { "type": "module" } - that is all
+├── images/                    ← shared diagrams and screenshots used across modules
 ├── models/                    ← shared GGUF cache reused by modules 11 and 12
 │
 ├── 01-what-is-mcp/
 │   ├── README.md
-│   └── diagram.md
+│   └── ANSWERS.md             ← optional self-check answers; this module is docs-only
 │
 ├── 02-json-rpc/
 │   ├── README.md
-│   ├── diagram.svg          ← infographic (four shapes + dispatcher demo)
-│   ├── diagram.png
-│   ├── src/
-│   │   ├── jsonrpc.js         ← encode and decode messages
-│   │   └── dispatcher.js      ← route method calls to handlers
-│   └── run.md
+│   ├── run.md
+│   └── src/
+│       ├── jsonrpc.js         ← encode and decode messages
+│       └── dispatcher.js      ← route method calls to handlers
 │
 ├── 03-stdio-transport/
 │   ├── README.md
-│   ├── src/
-│   │   ├── framing.js         ← buffer stdin, emit complete messages
-│   │   ├── server.js          ← reads from stdin, writes to stdout
-│   │   └── client.js          ← spawns server, sends a message, reads reply
-│   └── run.md
+│   ├── run.md
+│   └── src/
+│       ├── framing.js         ← buffer stdin, emit complete messages
+│       ├── server.js          ← reads from stdin, writes to stdout
+│       └── client.js          ← spawns server, sends a message, reads reply
 │
 ├── 04-lifecycle/
 │   ├── README.md
-│   ├── src/
-│   │   ├── session.js         ← state machine: CREATED → INITIALIZING → READY → CLOSED
-│   │   ├── server.js          ← handles initialize, sends initialized notification
-│   │   └── client.js          ← sends initialize, waits for handshake to complete
-│   └── run.md
+│   ├── run.md
+│   └── src/
+│       ├── session.js         ← state machine: CREATED → INITIALIZING → READY → CLOSED
+│       ├── server.js          ← handles initialize, sends initialized notification
+│       └── client.js          ← sends initialize, waits for handshake to complete
 │
 ├── 05-tools-list/
 │   ├── README.md
-│   ├── src/
-│   │   ├── registry.js        ← store tool definitions
-│   │   ├── server.js          ← handles tools/list
-│   │   └── client.js          ← calls tools/list, prints what it finds
-│   └── run.md
+│   ├── run.md
+│   └── src/
+│       ├── registry.js        ← store tool definitions
+│       ├── server.js          ← handles tools/list
+│       └── client.js          ← calls tools/list, prints what it finds
 │
 ├── 06-tools-call/
 │   ├── README.md
 │   ├── run.md                 ← pick run-local or run-desktop
 │   ├── run-local.md           ← full local checklist
 │   ├── run-desktop.md         ← full Desktop checklist
-│   ├── src/
-│   │   ├── server.js          ← handles tools/call, runs the function, returns result
-│   │   ├── client.js          ← calls a tool, prints the result
-│   │   ├── inspector.md              ← MCP Inspector (launch, connect, Claude Desktop limits)
-│   │   ├── connect.md         ← wire to Claude Desktop (overview)
-│   │   ├── connect-macos.md
-│   │   ├── connect-windows.md
-│   │   └── connect-linux.md
+│   └── src/
+│       ├── server.js          ← handles tools/call, runs the function, returns result
+│       ├── client.js          ← calls a tool, prints the result
+│       ├── inspector.md       ← MCP Inspector (launch, connect, Claude Desktop limits)
+│       ├── connect.md         ← wire to Claude Desktop (overview)
+│       ├── connect-macos.md
+│       ├── connect-windows.md
+│       └── connect-linux.md
 │
 ├── 07-errors/
 │   ├── README.md
-│   ├── src/
-│   │   ├── errors.js          ← JSON-RPC error codes vs isError tool results
-│   │   ├── server.js
-│   │   └── client.js
-│   └── run.md
+│   ├── run.md
+│   └── src/
+│       ├── errors.js          ← JSON-RPC error codes vs isError tool results
+│       ├── server.js
+│       └── client.js
 │
 ├── 08-resources/
 │   ├── README.md
-│   ├── src/
-│   │   ├── server.js          ← handles resources/list and resources/read
-│   │   └── client.js
-│   └── run.md
+│   ├── run.md
+│   └── src/
+│       ├── registry.js        ← store resource definitions + readers
+│       ├── server.js          ← handles resources/list and resources/read
+│       └── client.js
 │
 ├── 09-prompts/
 │   ├── README.md
-│   ├── src/
-│   │   ├── registry.js        ← prompt definitions + resolvers
-│   │   ├── server.js          ← handles prompts/list and prompts/get
-│   │   ├── client.js
-│   │   ├── connect-prompts.md ← wire prompts to Desktop / Cursor
-│   │   ├── connect-prompts-macos.md
-│   │   ├── connect-prompts-windows.md
-│   │   ├── connect-prompts-linux.md
-│   │   └── connect-cursor.md
-│   └── run.md
+│   ├── run.md
+│   └── src/
+│       ├── registry.js        ← prompt definitions + resolvers
+│       ├── demo-prompts.js    ← shared registration for tutorial prompts
+│       ├── server.js          ← handles prompts/list and prompts/get
+│       ├── client.js
+│       ├── inspector.md       ← MCP Inspector walkthrough
+│       ├── connect-prompts.md ← wire prompts to Desktop / Cursor
+│       ├── connect-prompts-macos.md
+│       ├── connect-prompts-windows.md
+│       ├── connect-prompts-linux.md
+│       └── connect-cursor.md
 │
 ├── 10-notifications/
 │   ├── README.md
-│   ├── src/
-│   │   ├── server.js          ← pushes notifications/resources/updated
-│   │   └── client.js          ← listens for server-sent notifications
-│   └── run.md
+│   ├── run.md
+│   └── src/
+│       ├── server.js          ← pushes tools/list_changed + resources/list_changed + resources/updated
+│       └── client.js          ← listens for server-sent notifications
 │
 ├── 11-sampling/
 │   ├── README.md
-│   ├── package.json           ← node-llama-cpp (local Qwen for sampling client)
-│   ├── src/
-│   │   ├── server.js          ← sends sampling/createMessage to the client
-│   │   ├── llm.js             ← loads GGUF, runs sampling/createMessage
-│   │   └── client.js          ← host: local LLM + MCP client
-│   └── run.md
+│   ├── package.json           ← node-llama-cpp for the local sampling client
+│   ├── run.md
+│   └── src/
+│       ├── server.js          ← sends sampling/createMessage to the client
+│       ├── llm.js             ← loads GGUF, runs sampling/createMessage
+│       └── client.js          ← host: local LLM + MCP client
 │
 └── 12-mcp-and-agents/
     ├── README.md              ← why MCP for agents; LangChain vs custom loop
+    ├── package.json           ← node-llama-cpp for the custom local agent loop
     ├── run.md
     ├── src/
     │   ├── mcp-session.js     ← reusable client: handshake, list, call
@@ -133,6 +136,7 @@ mcp/
     │   └── agent-loop.js      ← plan → act → observe demo
     └── langchain-example/     ← optional; npm deps (@langchain/mcp-adapters)
         ├── README.md
+        ├── .env.example
         ├── package.json
         └── agent.mjs
 ```
@@ -145,19 +149,24 @@ One rule: **no npm dependencies** in modules 01–10 (and module 11’s **server
 - [`12-mcp-and-agents/`](./12-mcp-and-agents/) - the custom agent loop also runs a local GGUF model via `node-llama-cpp` (`npm install` in that folder), while keeping the MCP host logic explicit.
 - [`12-mcp-and-agents/langchain-example/`](./12-mcp-and-agents/langchain-example/) - optional LangChain + MCP adapters.
 
-Modules 11 and 12 share the repository-level [`models/`](./models/) cache, so once one module downloads the GGUF, the other reuses it.
+Modules 11 and 12 share the repository-level [`models/`](./models/) cache, so once one module downloads the GGUF, the other reuses it. On first run, expect roughly **1.5-1.6 GB** of model files for the default Qwen GGUF.
 
 ---
 
 ## How each module is organised
 
-Every module contains three files you need to read.
+Most code modules follow the same three-part pattern:
 
 **README.md** - opens with the question the module answers, explains the concept plainly, shows the relevant raw JSON, and links to the exact spec section at the bottom. Read this first.
 
 **src/** - the implementation. Heavily commented. Every non-obvious decision has a comment explaining why, not just what.
 
 **run.md** - the exact commands to run, and what you should see when it works. If your output does not match, it tells you what to check.
+
+Two important exceptions:
+
+- [`01-what-is-mcp/`](./01-what-is-mcp/) is concept-only: read `README.md`, then use [`ANSWERS.md`](./01-what-is-mcp/ANSWERS.md) as a self-check.
+- Modules [`06-tools-call/`](./06-tools-call/), [`09-prompts/`](./09-prompts/), [`11-sampling/`](./11-sampling/), and [`12-mcp-and-agents/`](./12-mcp-and-agents/) include extra connect/install docs beyond the basic `README.md` + `src/` + `run.md` pattern.
 
 Module 06 uses two self-contained run files: [`run-local.md`](./06-tools-call/run-local.md) or [`run-desktop.md`](./06-tools-call/run-desktop.md) - pick one at [`run.md`](./06-tools-call/run.md).
 
@@ -176,8 +185,8 @@ You do not need to know anything about protocols, networking, or AI systems. Tho
 ## How to start
 
 ```bash
-git clone https://github.com/pguso/mcp.git
-cd mcp
+git clone https://github.com/pguso/mcp-from-scratch.git
+cd mcp-from-scratch
 ```
 
 Open [`01-what-is-mcp/README.md`](./01-what-is-mcp/README.md).

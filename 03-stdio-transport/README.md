@@ -10,6 +10,14 @@ How does that work in Node.js, and what problems does it introduce?
 
 ---
 
+## Prerequisites
+
+- Node.js 20 or later
+- Run commands from the project root (`mcp-from-scratch/`)
+- Module 02 must be present (this module imports [`jsonrpc.js`](../02-json-rpc/src/jsonrpc.js) and [`dispatcher.js`](../02-json-rpc/src/dispatcher.js))
+
+---
+
 ## The whole module in four steps
 
 Before any files or APIs, the transport story is this:
@@ -93,7 +101,7 @@ Line 1: '{"jsonrpc":"2.0","id":1,"method":"ping","params":{}}'
 Line 2: '{"jsonrpc":"2.0","id":2,"method":"ping","params":{}}'
 ```
 
-Each line goes to `decode()` in [jsonrpc.js](./src/jsonrpc.js). The transport never calls `JSON.parse` directly.
+Each line goes to `decode()` in [`02-json-rpc/src/jsonrpc.js`](../02-json-rpc/src/jsonrpc.js). The transport never calls `JSON.parse` directly.
 
 ---
 
@@ -119,7 +127,7 @@ To avoid hangs, always call `process.stdout.write(line)` directly - never `conso
 
 ## What stdin EOF means
 
-When the client closes its end of the pipe (by calling `child.stdin.end()`), the server sees an `end` event on `process.stdin`. This is the signal to exit. A well-behaved MCP server exits cleanly on stdin EOF. Module 04 adds a formal `shutdown` handshake, but the underlying mechanism is always this EOF signal.
+When the client closes its end of the pipe (by calling `child.stdin.end()`), the server sees an `end` event on `process.stdin`. This is the signal to exit. A well-behaved MCP server exits cleanly on stdin EOF. Module 04 adds a formal **initialize / ready** handshake before normal traffic, but process shutdown in this teaching repo still relies on stdin EOF.
 
 ---
 

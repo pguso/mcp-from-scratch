@@ -10,6 +10,14 @@ This module makes that decision explicit in [errors.js](./src/errors.js) and dem
 
 ---
 
+## Prerequisites
+
+- Node.js 20 or later
+- Run commands from the project root (`mcp-from-scratch/`)
+- Modules 02–06 must be present
+
+---
+
 ## Two layers of failure
 
 | Layer | Wire shape | Who fixes it? |
@@ -98,7 +106,7 @@ Is the tools/call request structurally valid and does the tool exist?
 
 ## What each file does
 
-**[src/errors.js](./src/errors.js)** - `protocolError`, `invalidParams`, `toolError`, `toolSuccess`, and `normalizeToolResult`. No I/O.
+**[src/errors.js](./src/errors.js)** - `protocolError`, `invalidParams`, `internalError`, `toolError`, `toolSuccess`, `normalizeToolResult`, and helpers such as `isProtocolError`. No I/O.
 
 **[src/server.js](./src/server.js)** - Same lifecycle as module 06. Demo tools: `echo`, `divide`, `validate_email`, `unstable`. The `tools/call` handler uses [errors.js](./src/errors.js) for every branch.
 

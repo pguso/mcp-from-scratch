@@ -10,6 +10,14 @@ Before a model can call a tool, it needs to know what tools exist, what each one
 
 ---
 
+## Prerequisites
+
+- Node.js 20 or later
+- Run commands from the project root (`mcp-from-scratch/`)
+- Modules 02–04 must be present
+
+---
+
 ## Discovery vs invocation
 
 Tools have two distinct protocol operations:
@@ -159,7 +167,7 @@ Run it: see [run.md](./run.md).
 
 Notice that [src/registry.js](./src/registry.js) stores schemas only. The server does not run `echo` or `add` yet - it only advertises them. That separation matters:
 
-1. **Discovery is cheap** - list once, cache, refresh when `list_changed` fires.
+1. **Discovery is cheap** - list once, cache, refresh when `notifications/tools/list_changed` fires.
 2. **Schemas are the contract** - clients and models plan calls from `inputSchema` before any code runs.
 3. **Module 06 wires execution** - `tools/call` looks up the name and invokes the real function.
 

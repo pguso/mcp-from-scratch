@@ -15,13 +15,21 @@ Modules 05–07 built **tools** - things the model can *call*. Some context is n
 
 ---
 
+## Prerequisites
+
+- Node.js 20 or later
+- Run commands from the project root (`mcp-from-scratch/`)
+- Modules 02–07 must be present
+
+---
+
 ## Discovery vs reading
 
 Resources have two protocol operations, parallel to tools:
 
 | Method | Purpose | This module |
 |--------|---------|-------------|
-| `resources/list` | Return resource **definitions** (uri, name, description, mimeType) | Yes |
+| `resources/list` | Return resource **definitions** (uri, name, title, description, mimeType) | Yes |
 | `resources/read` | Fetch **content** for one URI | Yes |
 
 Listing does not return file bodies. Reading does not change server state.
@@ -46,6 +54,7 @@ Important fields:
 
 - **`uri`** - unique identifier. Used again in `resources/read`.
 - **`name`** - short label (required by the spec).
+- **`title`** - optional display name for hosts and users. This demo uses it for all three resources.
 - **`description`** - helps the host or model choose context.
 - **`mimeType`** - optional hint for rendering (`text/plain`, `application/json`, …).
 
@@ -73,8 +82,23 @@ After the lifecycle handshake, the client discovers resources:
       {
         "uri": "demo://glossary",
         "name": "glossary",
+        "title": "MCP glossary",
         "description": "Short definitions of core MCP concepts.",
         "mimeType": "text/plain"
+      },
+      {
+        "uri": "demo://server-info",
+        "name": "server-info",
+        "title": "Server metadata",
+        "description": "JSON snapshot of this teaching server.",
+        "mimeType": "application/json"
+      },
+      {
+        "uri": "demo://welcome",
+        "name": "welcome",
+        "title": "Welcome note",
+        "description": "A short welcome message for the resources demo.",
+        "mimeType": "text/markdown"
       }
     ]
   }
@@ -149,7 +173,7 @@ Both are JSON-RPC **errors** - the request failed. There is no `isError` flag on
 
 **[src/registry.js](./src/registry.js)** - In-memory store for resource definitions and reader functions. `register()` validates each resource; `list()` returns definitions sorted by uri; `read()` invokes the reader.
 
-**[src/server.js](./src/server.js)** - Same lifecycle gate as earlier modules, plus `resources/list` and `resources/read`. Three demo resources use the custom `demo://` scheme.
+**[src/server.js](./src/server.js)** - Same lifecycle gate as earlier modules, plus `resources/list` and `resources/read`. Three demo resources use the custom `demo://` scheme: `demo://glossary`, `demo://server-info`, and `demo://welcome`.
 
 **[src/client.js](./src/client.js)** - Handshake, proves `resources/list` is rejected before initialize, lists resources, reads each one, then demonstrates not-found and invalid-params errors.
 

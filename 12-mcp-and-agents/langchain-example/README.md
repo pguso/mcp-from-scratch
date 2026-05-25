@@ -6,13 +6,13 @@ It demonstrates the same architecture as [`../src/agent-loop.js`](../src/agent-l
 
 ## What this proves
 
-| Step | Custom [src/agent-loop.js](../../src/agent-loop.js) | This example |
+| Step | Custom [src/agent-loop.js](../src/agent-loop.js) | This example |
 |------|------------------------|--------------|
 | Spawn MCP server | `createMcpSession()` | `MultiServerMCPClient` stdio config |
-| Handshake | Written in [src/mcp-session.js](../../src/mcp-session.js) | Inside the adapter |
+| Handshake | Written in [src/mcp-session.js](../src/mcp-session.js) | Inside the adapter |
 | `tools/list` + schemas | `mcpToolsToModelTools()` | `client.getTools()` |
 | `tools/call` | `mcp.callTool()` | Agent invokes LangChain tools |
-| LLM | [src/llm.js](../../src/llm.js) | `ChatOpenAI` + `createReactAgent` |
+| LLM | [src/llm.js](../src/llm.js) | `ChatOpenAI` + `createReactAgent` |
 
 ---
 
