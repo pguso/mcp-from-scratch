@@ -1,0 +1,12 @@
+{
+  "name": "mcp-from-scratch-agents",
+  "private": true,
+  "type": "module",
+  "description": "Module 12: MCP agent loop with a local GGUF model via node-llama-cpp",
+  "scripts": {
+    "start": "node src/agent-loop.js"
+  },
+  "dependencies": {
+    "node-llama-cpp": "^3.18.1"
+  }
+}

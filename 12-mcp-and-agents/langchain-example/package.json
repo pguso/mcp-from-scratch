@@ -1,0 +1,16 @@
+{
+  "name": "mcp-from-scratch-langchain-example",
+  "private": true,
+  "type": "module",
+  "description": "Optional: LangChain agent using MCP tools from module 06 (requires npm + API key)",
+  "scripts": {
+    "start": "node agent.mjs"
+  },
+  "dependencies": {
+    "@langchain/core": "^0.3.66",
+    "@langchain/langgraph": "^0.2.54",
+    "@langchain/mcp-adapters": "^0.2.2",
+    "@langchain/openai": "^0.6.2",
+    "dotenv": "^16.6.1"
+  }
+}
