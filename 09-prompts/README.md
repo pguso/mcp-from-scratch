@@ -20,6 +20,14 @@ Prompts are **user-controlled**. The model does not autonomously call `prompts/g
 
 ---
 
+## Prerequisites
+
+- Node.js 20 or later
+- Run commands from the project root (`mcp-from-scratch/`)
+- Modules 02–07 must be present
+
+---
+
 ## Discovery vs fetch
 
 | Method | Purpose | This module |
@@ -207,7 +215,7 @@ Per the spec, invalid prompt names and missing required arguments use JSON-RPC e
 
 **[src/demo-prompts.js](./src/demo-prompts.js)** - Shared registration for the three tutorial prompts (`summarize`, `code_review`, `explain_concept`).
 
-**[src/server.js](./src/server.js)** - Same lifecycle gate as earlier modules, plus `prompts/list`, `prompts/get`, and a `list_prompt_templates` tool so Claude Desktop shows this server in Konnektoren.
+**[src/server.js](./src/server.js)** - Same lifecycle gate as earlier modules, plus `prompts/list`, `prompts/get`, the usual `tools/list` / `tools/call` plumbing, and a `list_prompt_templates` tool so Claude Desktop shows this server in Konnektoren.
 
 **[src/client.js](./src/client.js)** - Handshake, proves `prompts/list` is rejected before initialize, lists prompts, fetches each one, then demonstrates not-found and missing-argument errors.
 

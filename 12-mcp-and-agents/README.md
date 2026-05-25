@@ -8,6 +8,18 @@ Read modules 01–06 first (especially [06-tools-call](../06-tools-call/README.m
 
 ---
 
+## Prerequisites
+
+- Node.js 20 or later
+- Run commands from the project root (`mcp-from-scratch/`)
+- Modules 02–06 present (the custom loop spawns [`06-tools-call/src/server.js`](../06-tools-call/src/server.js))
+- `npm install --prefix 12-mcp-and-agents`
+- On first run, expect roughly **1.5-1.6 GB** of GGUF downloads in the shared top-level [`models/`](../models/) cache
+
+The local-model settings match module 11: `GGUF_MODEL` overrides the default model, `LLM_CONTEXT_SIZE` changes the context window, and `LLM_GPU_LAYERS` controls GPU offload.
+
+---
+
 ## Start here: the agent loop you already know
 
 An **AI agent** is a loop:
@@ -36,7 +48,7 @@ In this module’s custom example, [src/agent-loop.js](./src/agent-loop.js) is t
 
 ### Plan, act, observe
 
-![olan act observe](../images/plan-act-observe.png)
+![plan act observe](../images/plan-act-observe.png)
 
 MCP owns the **Act** step’s wire format. The **Host** owns everything else: when to call the model, which servers are allowed, and whether a tool needs human approval.
 
@@ -92,7 +104,7 @@ The LLM never speaks MCP JSON directly. The **host** translates: `tools/list` �
 
 ## Custom agent: what we built in `src/`
 
-This repository’s rule is **no npm dependencies** in modules 01–10. Module 12 now follows module 11’s local-model approach: `npm install` in this folder pulls `node-llama-cpp`, but the agent loop itself stays small and explicit. The GGUF lives in the shared top-level [`models/`](../models/) cache, so module 11 and module 12 reuse the same downloaded file.
+This repository’s rule is **no npm dependencies** in modules 01–10. Module 12 follows module 11’s local-model approach: `npm install` in this folder pulls `node-llama-cpp`, but the agent loop itself stays small and explicit. The GGUF lives in the shared top-level [`models/`](../models/) cache, so module 11 and module 12 reuse the same downloaded file.
 
 | File | Role |
 |------|------|
@@ -100,8 +112,11 @@ This repository’s rule is **no npm dependencies** in modules 01–10. Module 1
 | [`tool-schema.js`](./src/tool-schema.js) | MCP Tool → neutral schema (same job as adapter translation) |
 | [`llm.js`](./src/llm.js) | Loads GGUF via `node-llama-cpp`; chooses a tool call and writes the final answer |
 | [`agent-loop.js`](./src/agent-loop.js) | Plan → act → observe in one script |
+| [`package.json`](./package.json) | Module-local dependency and `npm start` entry point for the custom loop |
 
 [`tool-schema.js`](./src/tool-schema.js) copies each tool's `description` and `inputSchema` from `tools/list` **verbatim** into the model API. Weak definitions from module 05 propagate unchanged - garbage in, garbage out. See **Designing tools the model can choose** in [module 05](../05-tools-list/README.md).
+
+In the local demo, [`llm.js`](./src/llm.js) does not use a provider's native function-calling API. It constrains the model with a JSON Schema grammar so the response must parse as exactly one `{ name, arguments }` tool call.
 
 **MCP prompts** (module 09) are user-selected templates in Desktop/Cursor - this agent loop uses **tools** only, not `prompts/get`.
 
@@ -115,7 +130,7 @@ Run it: see [run.md](./run.md).
 
 ## LangChain: optional runnable example
 
-The folder [`langchain-example/`](./langchain-example/) is the **only** place in this repo that installs npm packages. It uses `@langchain/mcp-adapters` to:
+The folder [`langchain-example/`](./langchain-example/) is an **optional second npm island** in this repo. Module 12 itself installs `node-llama-cpp` for the custom loop; this subfolder instead installs LangChain and MCP adapters. It uses `@langchain/mcp-adapters` to:
 
 1. Connect via **stdio** to the same module 06 server.
 2. Load tools with `getTools()` (handles `tools/list` + schema translation).

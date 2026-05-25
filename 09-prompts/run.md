@@ -148,7 +148,7 @@ The browser will say **"Connect to an MCP server to start inspecting"** until yo
 
 ## 4. Optional: connect to Claude Desktop or Cursor
 
-After the client demo works, wire this server to a real host so you can invoke prompts from the `/` menu:
+After the client demo works, wire this server to a real host so you can invoke prompts from the host UI (`+` menu in Claude Desktop, slash menu or MCP Prompts in Cursor):
 
 - Overview: [`src/connect-prompts.md`](./src/connect-prompts.md)
 - macOS: [`src/connect-prompts-macos.md`](./src/connect-prompts-macos.md)

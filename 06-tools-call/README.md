@@ -1,5 +1,3 @@
-![invoke tool](../images/invoke-tool.png)
-
 # 06 How does a client actually invoke a tool?
 
 ## The question
@@ -7,6 +5,14 @@
 Module 05 answered discovery: the client knows which tools exist and what arguments each one accepts. The next step is **execution** - send arguments, run the server-side function, and return a result the model can read.
 
 MCP does that with **`tools/call`**.
+
+---
+
+## Prerequisites
+
+- Node.js 20 or later
+- Run commands from the project root (`mcp-from-scratch/`)
+- Modules 02–05 must be present
 
 ---
 
@@ -143,9 +149,9 @@ If a name appears in the list but has no handler, that is a server bug. If the c
 
 **[src/server.js](./src/server.js)** - Same lifecycle and `tools/list` as module 05, plus `tools/call`. Three demo tools run for real: `echo`, `get_time`, and `add`.
 
-**[src/client.js](./src/client.js)** - Handshake, then calls each tool and prints the text from `result.content`.
+**[src/client.js](./src/client.js)** - Handshake, proves `tools/call` is rejected before initialize, calls each demo tool, then shows the unknown-tool protocol error path.
 
-**[`src/connect.md`](./src/connect.md)** (+ OS guides) - Claude Desktop wiring. See [With Claude Desktop](#with-claude-desktop) above.
+**[`src/connect.md`](./src/connect.md)** (+ OS guides) - Claude Desktop wiring. See **Connect and debug** above.
 
 Run it: [run-local.md](./run-local.md) or [run-desktop.md](./run-desktop.md) (pick one at [run.md](./run.md)).
 

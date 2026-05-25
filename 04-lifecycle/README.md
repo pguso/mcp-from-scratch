@@ -1,12 +1,20 @@
 ![handshake](../images/handshake.png)
 
-# 04  How does a session actually start?
+# 04 How does a session actually start?
 
 ## The question
 
 Module 03 gave us a working transport: two processes exchanging JSON-RPC messages over stdin and stdout. But opening a pipe is not the same as starting an MCP session. If the client immediately sent `tools/list`, should the server answer? What version of the protocol are we speaking? What features does each side support?
 
 MCP answers these questions with a **lifecycle handshake** that must complete before anything else happens.
+
+---
+
+## Prerequisites
+
+- Node.js 20 or later
+- Run commands from the project root (`mcp-from-scratch/`)
+- Modules 02–03 must be present
 
 ---
 
@@ -21,6 +29,8 @@ The handshake serves three purposes:
 3. **Identity exchange** - `clientInfo` and `serverInfo` carry name and version strings for logging and debugging.
 
 Until the handshake finishes, the session is not **ready**. The server must reject normal requests. The client must not send them.
+
+This module accepts protocol versions `2025-11-25` and `2025-06-18`; later examples keep using `2025-11-25`.
 
 ---
 

@@ -18,6 +18,13 @@ The full specification is one short page. Everything MCP needs is already in it.
 
 ---
 
+## Prerequisites
+
+- Node.js 20 or later
+- Run commands from the project root (`mcp-from-scratch/`)
+
+---
+
 ## The four message shapes
 
 ### Request
@@ -136,6 +143,8 @@ JSON-RPC 2.0 allows sending multiple requests as a JSON array in one message. MC
 ## What the two source files do
 
 **[src/jsonrpc.js](./src/jsonrpc.js)** - Pure encoding and decoding. No I/O, no state. Given data, produce a JSON string. Given a JSON string, produce a classified message object. This is the layer everything else builds on.
+
+All `encode*()` helpers append a trailing newline (`\n`) because module 03 uses newline-delimited JSON over stdio.
 
 **[src/dispatcher.js](./src/dispatcher.js)** - Stateful routing. You register handlers for method names. When a message arrives, the dispatcher classifies it, calls the right handler, and - for requests - formats the handler's return value as a proper response (or catches exceptions and formats them as errors).
 

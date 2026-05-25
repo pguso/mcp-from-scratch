@@ -52,7 +52,7 @@ The server does **not** declare `sampling` in its own capabilities - sampling is
 ```json
 {
   "jsonrpc": "2.0",
-  "id": 10001,
+  "id": 10000,
   "method": "sampling/createMessage",
   "params": {
     "messages": [
@@ -75,7 +75,7 @@ The server does **not** declare `sampling` in its own capabilities - sampling is
 ```json
 {
   "jsonrpc": "2.0",
-  "id": 10001,
+  "id": 10000,
   "result": {
     "role": "assistant",
     "content": {
@@ -115,7 +115,7 @@ Optional environment variables (see [src/llm.js](./src/llm.js)):
 2. **Server** stores `clientCapabilities` from `initialize`. If `sampling` is present, tool `route_support_ticket` may run.
 3. When `route_support_ticket` is called, the server builds a `sampling/createMessage` request to classify the message, writes it to stdout, and **waits** for the matching response on stdin (outbound id space starts at `10000` so it does not collide with the client's `1`, `2`, `3`…).
 4. The client handles `sampling/createMessage` by calling the local Qwen model (`runSampling` in [llm.js](./src/llm.js)) and returns `role`, `content`, `model`, and `stopReason`.
-5. The server parses the category label, looks up its hardcoded routing table, and returns structured output (category, team, SLA) in the `tools/call` result.
+5. The server parses the category label, looks up its hardcoded routing table, and returns structured output (category, team, SLA) in the `tools/call` result. If the model reply does not contain a known label, the parser falls back to `technical` and marks that in the returned text.
 
 ---
 
@@ -127,7 +127,7 @@ Optional environment variables (see [src/llm.js](./src/llm.js)):
 
 **[src/client.js](./src/client.js)** - Teaching host: local LLM + handshake with `sampling` capability + `sampling/createMessage` handler, then calls `route_support_ticket` to exercise the loop.
 
-**[package.json](../package.json)** - Module 11 is the only protocol module whose **client** requires `npm install` (native bindings for local inference).
+**[package.json](./package.json)** - Module 11 is the first protocol module whose **client** requires `npm install` (native bindings for local inference). Module 12 reuses the same local-model approach for its custom agent loop.
 
 Run it: see [run.md](./run.md).
 
@@ -147,4 +147,4 @@ The specification expects a **human in the loop**: review prompts, edit if neede
 
 ---
 
-**You have finished the learning path.** Re-read the full specification - you now have the vocabulary for every major server and client feature in MCP `2025-11-25`.
+**Next:** [12-mcp-and-agents/README.md](../12-mcp-and-agents/README.md) - Why use MCP when building AI agents? After module 12, re-read the full specification - you now have the vocabulary for every major server and client feature in MCP `2025-11-25`.

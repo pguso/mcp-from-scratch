@@ -10,6 +10,14 @@ MCP solves that with **server-initiated notifications** - JSON-RPC messages with
 
 ---
 
+## Prerequisites
+
+- Node.js 20 or later
+- Run commands from the project root (`mcp-from-scratch/`)
+- Modules 02–08 must be present
+
+---
+
 ## Requests vs notifications (both directions)
 
 | Direction | Who sends | Has `id`? | Expects reply? | Example |
@@ -117,11 +125,13 @@ Three teaching tools mutate state and push the matching notification:
 
 Notifications are only sent when the session is **READY** (after the handshake). The server writes them with `encodeNotification()` directly to stdout - the same transport as responses, but without an `id`.
 
+Before any mutations, the demo server starts with **three tools** (`add_note`, `publish_status`, `register_extra_tool`) and **two resources** (`demo://readme`, `demo://status`). `add_note` accepts an optional `text` field; if omitted, the server creates `Note #N`.
+
 ---
 
 ## What each file does
 
-**[src/server.js](./src/server.js)** - Full MCP server from earlier modules, plus `notifyClient()`, subscription tracking, `resources/subscribe`, and tools that emit the three notification types.
+**[src/server.js](./src/server.js)** - Teaching server with tools, resources, and notifications, plus `notifyClient()`, subscription tracking, `resources/subscribe`, and tools that emit the three notification types.
 
 **[src/client.js](./src/client.js)** - Handshake, initial discovery, subscribe to `demo://status`, then calls each demo tool. Incoming notifications trigger automatic `tools/list`, `resources/list`, or `resources/read` so you can see the refresh loop in the log.
 
